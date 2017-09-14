@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{Simple gem that listens on gerrit stream-events and puts comments to jira.}
   spec.description   = %q{Nothing more to add}
-  spec.homepage      = "not webpage"
+  spec.homepage      = "https://not.done.yet"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
@@ -29,7 +29,11 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_development_dependency "bundler", "~> 1.16.a"
+  spec.add_dependency 'byebug'
+  spec.add_dependency 'colorize'
+  spec.add_dependency 'jira-ruby'
+  spec.add_dependency 'gerry', "~> 1.1.5"
+  spec.add_development_dependency "bundler", "~> 1.15.4"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
 end

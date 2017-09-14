@@ -1,0 +1,5 @@
+--- # settings
+  jira_user: jenkins-jira@esrlabs.com
+  jira_password: the_password
+  gerrit_user: christian.koestlin
+  gerrit_password: the_password

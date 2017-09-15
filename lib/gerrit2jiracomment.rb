@@ -58,7 +58,7 @@ module Gerrit2jiracomment
   end
 
   def self.run()
-    settings = YAML.load_file('settings.yaml')
+    settings = YAML.load(`gpg --decrypt settings.yaml.gpg`)
     gerrit = Gerry.new('http://gerrit', settings['gerrit_user'], settings['gerrit_password'])
     gerrit.set_auth_type(:digest_auth)
     # this is only included in gerrits > 2.12.2

@@ -3,11 +3,8 @@ PATH
   specs:
     gerrit2jiracomment (0.1.0)
       byebug
-      gerry (~> 0.1.5)
       jira-ruby
       rx
-    gerry (0.1.5)
-      httparty
 
 GEM
   remote: https://rubygems.org/
@@ -20,46 +17,43 @@ GEM
     byebug (9.1.0)
     concurrent-ruby (1.0.5)
     diff-lcs (1.3)
-    httparty (0.15.6)
-      multi_xml (>= 0.5.2)
-    i18n (0.9.0)
+    i18n (0.9.1)
       concurrent-ruby (~> 1.0)
     jira-ruby (1.4.3)
       activesupport
       multipart-post
       oauth (~> 0.5, >= 0.5.0)
     minitest (5.10.3)
-    multi_xml (0.6.0)
     multipart-post (2.0.0)
-    oauth (0.5.3)
-    rake (10.5.0)
-    rspec (3.6.0)
-      rspec-core (~> 3.6.0)
-      rspec-expectations (~> 3.6.0)
-      rspec-mocks (~> 3.6.0)
-    rspec-core (3.6.0)
-      rspec-support (~> 3.6.0)
-    rspec-expectations (3.6.0)
+    oauth (0.5.4)
+    rake (12.3.0)
+    rspec (3.7.0)
+      rspec-core (~> 3.7.0)
+      rspec-expectations (~> 3.7.0)
+      rspec-mocks (~> 3.7.0)
+    rspec-core (3.7.0)
+      rspec-support (~> 3.7.0)
+    rspec-expectations (3.7.0)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.6.0)
-    rspec-mocks (3.6.0)
+      rspec-support (~> 3.7.0)
+    rspec-mocks (3.7.0)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.6.0)
-    rspec-support (3.6.0)
+      rspec-support (~> 3.7.0)
+    rspec-support (3.7.0)
     rx (0.0.3)
     thread_safe (0.3.6)
-    tzinfo (1.2.3)
+    tzinfo (1.2.4)
       thread_safe (~> 0.1)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (~> 1.15.4)
+  bundler
   gerrit2jiracomment!
-  rake (~> 10.0)
-  rspec (~> 3.0)
-  rspec-mocks (~> 3.0)
+  rake
+  rspec
+  rspec-mocks
 
 BUNDLED WITH
-   1.15.4
+   1.16.1

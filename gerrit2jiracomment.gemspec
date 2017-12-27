@@ -30,10 +30,11 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency 'byebug'
-  spec.add_dependency 'colorize'
+  spec.add_dependency 'rx'
   spec.add_dependency 'jira-ruby'
-  spec.add_dependency 'gerry', "~> 1.1.5"
+  spec.add_dependency 'gerry', "~> 0.1.5"
   spec.add_development_dependency "bundler", "~> 1.15.4"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
+  spec.add_development_dependency "rspec-mocks", "~> 3.0"
 end

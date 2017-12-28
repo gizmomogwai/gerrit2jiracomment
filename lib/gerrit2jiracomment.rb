@@ -1,6 +1,7 @@
 # coding: utf-8
 require "gerrit2jiracomment/version"
 require 'logger'
+require 'syslog/logger'
 require 'json'
 require 'open3'
 require 'ostruct'
@@ -154,7 +155,12 @@ module Gerrit2jiracomment
   end
 
   def self.run()
-    logger = Logger.new(STDOUT)
+    begin
+      logger = Syslog::Logger.new 'g2jc'
+    rescue
+      logger = Logger.new(STDOUT)
+    end
+
     logger.formatter = proc do |severity, datetime, progname, msg|
       tag, m = msg.split("†")
       if !m

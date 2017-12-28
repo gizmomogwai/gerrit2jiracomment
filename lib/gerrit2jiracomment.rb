@@ -27,10 +27,11 @@ module Gerrit2jiracomment
       #  logger.debug("not doing anything its not christian")
       #  raise ProcessException('skipping merge, as it does not belong to christian')
       #end
-
       logger.debug("changeset†Send change merged to jira #{event}")
       commit_message = event.change.commitMessage
-      commit_title = commit_message.split("\n").first.strip
+      commit_title = event.change.subject
+      submitter = event.submitter.email
+      author = event.patchSet.author.email
       logger.debug("changeset†found commit title: #{commit_title}")
       logger.debug("changeset†found commit message: #{commit_message}")
 
@@ -43,9 +44,9 @@ module Gerrit2jiracomment
           comment = issue.comments.build
           uri = URI.parse(event.change.url)
           base_url = "#{uri.scheme}://#{uri.host}"
-          link_to_changeset = "[changeset|#{event.change.url}]"
+          link_to_changeset = "[Changeset|#{event.change.url}]"
           link_to_commit = "[#{event.patchSet.revision}|#{base_url}/plugins/gitiles/#{event.change.project}/+/#{event.patchSet.revision}]"
-          comment_text = "#{commit_title}\n#{link_to_changeset} for #{event.change.branch}@#{server}/#{event.change.project} commit: #{link_to_commit}"
+          comment_text = "Commit: #{commit_title}\nAuthor: #{author}\nSubmitter: #{submitter}\n#{link_to_changeset}: for #{event.change.branch}@#{server}/#{event.change.project}\nCommit: #{link_to_commit}"
           logger.debug("changeset†Adding #{comment_text} to jira #{issue_comment}")
           comment.save!(body: comment_text)
           found = true
@@ -145,7 +146,7 @@ module Gerrit2jiracomment
       sink.send(event.type.gsub("-", "_").to_sym, logger, event, server)
       logger.info("events†Finished processing")
     rescue NoMethodError => e
-      logger.debug("events†Cannot handle event of type #{event.type}")
+      logger.debug("events†Cannot handle event of type #{event.type} - #{e}")
     rescue => error
       bt = error.backtrace.join("\n")
       logger.error("events†Cannot process event #{error} / #{bt}")

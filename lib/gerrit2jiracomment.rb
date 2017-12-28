@@ -30,6 +30,8 @@ module Gerrit2jiracomment
 
       logger.debug("changeset†Send change merged to jira #{event}")
       commit_message = event.change.commitMessage
+      commit_title = commit_message.split("\n").first.strip
+      logger.debug("changeset†found commit title: #{commit_title}")
       logger.debug("changeset†found commit message: #{commit_message}")
 
       found = false
@@ -43,7 +45,7 @@ module Gerrit2jiracomment
           base_url = "#{uri.scheme}://#{uri.host}"
           link_to_changeset = "[changeset|#{event.change.url}]"
           link_to_commit = "[#{event.patchSet.revision}|#{base_url}/plugins/gitiles/#{event.change.project}/+/#{event.patchSet.revision}]"
-          comment_text = "#{link_to_changeset} for #{event.change.branch}@#{server}/#{event.change.project} commit: #{link_to_commit}"
+          comment_text = "#{commit_title}\n#{link_to_changeset} for #{event.change.branch}@#{server}/#{event.change.project} commit: #{link_to_commit}"
           logger.debug("changeset†Adding #{comment_text} to jira #{issue_comment}")
           comment.save!(body: comment_text)
           found = true

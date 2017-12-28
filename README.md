@@ -10,6 +10,7 @@ then compile and install gerrit2jiracomment.
 ## Usage
 
 `bundle exec exe/gerrit2jiracomment` for development or just gerrit2jiracomment
+encode your settings with gpg -e -r user@email.com settings.yaml
 
 ## Development
 

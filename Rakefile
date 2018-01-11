@@ -6,7 +6,7 @@ require 'rubocop/rake_task'
 
 RuboCop::RakeTask.new
 # as soon as the project is clean enough, enable this
-# Rake::Task['build'].enhance(['rubocop:auto_correct'])
+Rake::Task['build'].enhance(['rubocop:auto_correct'])
 
 RSpec::Core::RakeTask.new(:spec)
 

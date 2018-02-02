@@ -1,4 +1,3 @@
-# coding: utf-8
 # frozen_string_literal: true
 
 require 'gerrit2jiracomment/version'
@@ -34,7 +33,7 @@ module Gerrit2jiracomment
       @log.error("#{@tag}†#{message}: #{error_message}")
     end
 
-    def raise(c, message)
+    def fail(c, message)
       raise(c, "#{@tag}†#{message}")
     end
   end
@@ -108,7 +107,7 @@ module Gerrit2jiracomment
       @jira.Issue.find(issue).comments.build.save!(body: comment_text)
       true
     rescue JIRA::HTTPError => e
-      log.error("Cannot find #{issue} in our jira #{e}")
+      log.error("Cannot find #{issue} in our jira", e)
       false
     end
 
@@ -125,7 +124,7 @@ module Gerrit2jiracomment
         found ||= handle_change_merged_issue_comment(match, log, event, server)
       end
 
-      found || log.raise(ProcessException, "No jira-issue found in #{event}")
+      found || log.fail(ProcessException, "No jira-issue found in #{event}")
     end
   end
 
@@ -155,13 +154,13 @@ module Gerrit2jiracomment
     logger = LoggerWithTag.new(log, 'events')
     event = e.first
     server = e[1]
-    begin
-      sink.send(event.type.tr('-', '_').to_sym, log, event, server)
-    rescue NoMethodError => e
-      logger.debug("Cannot handle event of type #{event.type} - #{e}")
-    rescue StandardError => error
-      logger.error('Cannot process event', error)
-    end
+    return sink.send(event.type.tr('-', '_').to_sym, log, event, server)
+  rescue NoMethodError => e
+    logger.debug("Cannot handle event of type #{event.type} - #{e}")
+    false
+  rescue StandardError => error
+    logger.error('Cannot process event', error)
+    false
   end
 
   def self.syslog_or_stdout_logger

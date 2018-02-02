@@ -16,7 +16,7 @@ RSpec.describe Gerrit2jiracomment do
   it 'dispatches change_merged' do
     logger = spy('logger')
     sink = spy('sink')
-    content = File.open('spec/change_merged.txt', 'r:UTF-8', &:read)
+    content = File.open('spec/input/change_merged.txt', 'r:UTF-8', &:read)
     event = Gerrit2jiracomment.parse_json(content)
 
     Gerrit2jiracomment.dispatch(logger, [event, 'gerrit'], sink)
@@ -24,23 +24,30 @@ RSpec.describe Gerrit2jiracomment do
   end
 
   it 'executes change_merged' do
-    logger = Logger.new(STDOUT)
+    logger = spy('logger') # Logger.new(STDOUT)
     jira = instance_double('jira')
     allow(jira)
-      .to receive_message_chain('Issue.find.comments.build.save!') do |data|
-      lines = data[:body].split("\n")
-      expect(lines[0]).to start_with('Title: ')
-      expect(lines[1]).to start_with('Author: ')
-      expect(lines[2]).to start_with('Submitter: ')
-      expect(lines[3]).to start_with('Changeset: ')
-      expect(lines[4]).to start_with('Branch: ')
-      expect(lines[5]).to start_with('Project: ')
-      expect(lines[6]).to start_with('Commit: ')
-    end
+      .to(receive_message_chain('Issue.find.comments.build.save!')
+            .with(body: File.read('spec/output/change_merged_result.txt')))
 
     sink = Gerrit2jiracomment::ToJira.new(logger, jira)
-    content = File.open('spec/change_merged.txt', 'r:UTF-8', &:read)
+    content = File.open('spec/input/change_merged.txt', 'r:UTF-8', &:read)
     event = Gerrit2jiracomment.parse_json(content)
-    Gerrit2jiracomment.dispatch(logger, [event, 'gerrit'], sink)
+    expect(Gerrit2jiracomment.dispatch(logger, [event, 'gerrit'], sink))
+      .to eq(true)
+  end
+
+  it 'complains if there is no ticket number found' do
+    logger = spy('logger')
+    jira = instance_double('jira')
+    allow(jira)
+      .to(receive_message_chain('Issue.find').and_raise(
+            JIRA::HTTPError.new('test')
+      ))
+    sink = Gerrit2jiracomment::ToJira.new(logger, jira)
+    content = File.open('spec/input/change_merged_no_ticket.txt', 'r:UTF-8', &:read)
+    event = Gerrit2jiracomment.parse_json(content)
+    expect(Gerrit2jiracomment.dispatch(logger, [event, 'gerrit'], sink))
+      .to eq(false)
   end
 end

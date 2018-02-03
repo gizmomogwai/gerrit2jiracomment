@@ -1,6 +1,19 @@
 # frozen_string_literal: true
 
 RSpec.describe Gerrit2jiracomment do
+  def read(name)
+    File.open(name, 'r:UTF-8', &:read)
+  end
+
+  def input(name)
+    filename = "spec/input/#{name}.txt"
+    read(filename)
+  end
+
+  def output(name)
+    filename = "spec/output/#{name}.txt"
+    read(filename)
+  end
   it 'has a version number' do
     expect(Gerrit2jiracomment::VERSION).not_to be nil
   end
@@ -16,7 +29,7 @@ RSpec.describe Gerrit2jiracomment do
   it 'dispatches change_merged' do
     logger = spy('logger')
     sink = spy('sink')
-    content = File.open('spec/input/change_merged.txt', 'r:UTF-8', &:read)
+    content = input('change_merged')
     event = Gerrit2jiracomment.parse_json(content)
 
     Gerrit2jiracomment.dispatch(logger, [event, 'gerrit'], sink)
@@ -28,10 +41,10 @@ RSpec.describe Gerrit2jiracomment do
     jira = instance_double('jira')
     allow(jira)
       .to(receive_message_chain('Issue.find.comments.build.save!')
-            .with(body: File.read('spec/output/change_merged_result.txt')))
+            .with(body: output('change_merged_result')))
 
     sink = Gerrit2jiracomment::ToJira.new(logger, jira)
-    content = File.open('spec/input/change_merged.txt', 'r:UTF-8', &:read)
+    content = input('change_merged')
     event = Gerrit2jiracomment.parse_json(content)
     expect(Gerrit2jiracomment.dispatch(logger, [event, 'gerrit'], sink))
       .to eq(true)
@@ -45,7 +58,7 @@ RSpec.describe Gerrit2jiracomment do
             JIRA::HTTPError.new('test')
       ))
     sink = Gerrit2jiracomment::ToJira.new(logger, jira)
-    content = File.open('spec/input/change_merged_no_ticket.txt', 'r:UTF-8', &:read)
+    content = input('change_merged_no_ticket')
     event = Gerrit2jiracomment.parse_json(content)
     expect(Gerrit2jiracomment.dispatch(logger, [event, 'gerrit'], sink))
       .to eq(false)

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    gerrit2jiracomment (0.2.3)
+    gerrit2jiracomment (0.2.4)
       byebug
       jira-ruby
       rx

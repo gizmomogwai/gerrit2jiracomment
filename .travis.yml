@@ -8,6 +8,7 @@ before_script:
   - bundle install
 script:
   - bundle exec rake spec build
+  - find .
 deploy:
   provider: rubygems
   skip_cleanup: true

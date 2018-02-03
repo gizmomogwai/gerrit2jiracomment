@@ -1,4 +1,4 @@
-* Gerrit2jiracomment
+* Gerrit2jiracomment [[https://github.com/gizmomogwai/gerrit2jiracomment][https://img.shields.io/github/tag/gizmomogwai/gerrit2jiracomment.svg?style=flat-square]] [[https://travis-ci.org/gizmomogwai/gerrit2jiracomment][https://img.shields.io/travis/gizmomogwai/gerrit2jiracomment/master.svg?style=flat-square]] [[https://codecov.io/gh/gizmomogwai/gerrit2jiracomment][https://img.shields.io/codecov/c/github/gizmomogwai/gerrit2jiracomment/master.svg?style=flat-square]] [[https://gizmomogwai.github.io/gerrit2jiracomment][https://img.shields.io/readthedocs/pip.svg?style=flat-square]]
 
 Proof of concept implementation that listens on a gerrit stream and updated jira comments accordingly.
 

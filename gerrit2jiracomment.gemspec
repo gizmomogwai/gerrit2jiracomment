@@ -14,7 +14,7 @@ Gem::Specification.new do |spec|
   spec.summary       = 'Simple gem that listens on gerrit stream-events' \
                        ' and puts comments to jira.'
   spec.description   = 'Nothing more to add'
-  spec.homepage      = 'https://not.done.yet'
+  spec.homepage      = 'https://github.com/gizmomogwai/gerrit2jiracomment'
 
   spec.files = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features)/})
@@ -23,7 +23,6 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'byebug'
   spec.add_dependency 'jira-ruby'
   spec.add_dependency 'rx'
   spec.add_development_dependency 'bundler'

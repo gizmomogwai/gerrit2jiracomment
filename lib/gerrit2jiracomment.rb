@@ -215,6 +215,11 @@ module Gerrit2jiracomment
     )
   end
 
+  def hosts
+    ['gerrit.int.esrlabs.com', 'git.esrlabs.com',
+     'hcp5-sources.int.esrlabs.com']
+  end
+
   def self.run
     logger = init_logger
 
@@ -224,8 +229,7 @@ module Gerrit2jiracomment
     event_sink = to_jira(logger, settings)
 
     connect(logger, subject, event_sink)
-
-    ['gerrit.int.esrlabs.com', 'git.esrlabs.com']
+    hosts
       .map { |server| receive_events(logger, server, subject) }
       .each(&:join)
     logger.info('lifecycle†exiting')

@@ -15,6 +15,6 @@ encode your settings with gpg -e -r user@email.com settings.yaml
 ** Development
 
 To deploy a new gem version increment version.rb, run bundle install, make a commit and push this to origin.
-Travis will do the deployment, if the build is allright.
+Travis will do the deployment to rubygems.org, if the build is allright.
 
 ** Contributing

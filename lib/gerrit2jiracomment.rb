@@ -1,3 +1,4 @@
+# coding: utf-8
 # frozen_string_literal: true
 
 require 'gerrit2jiracomment/version'
@@ -215,7 +216,7 @@ module Gerrit2jiracomment
     )
   end
 
-  def hosts
+  def self.hosts
     ['gerrit.int.esrlabs.com', 'git.esrlabs.com',
      'hcp5-sources.int.esrlabs.com']
   end

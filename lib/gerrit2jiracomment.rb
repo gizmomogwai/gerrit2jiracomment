@@ -1,4 +1,3 @@
-# coding: utf-8
 # frozen_string_literal: true
 
 require 'gerrit2jiracomment/version'
@@ -33,8 +32,8 @@ module Gerrit2jiracomment
       @log.error("#{@tag}†#{message}: #{error_message}")
     end
 
-    def fail(c, message)
-      raise(c, "#{@tag}†#{message}")
+    def fail(exception, message)
+      raise(exception, "#{@tag}†#{message}")
     end
   end
 
@@ -150,17 +149,16 @@ module Gerrit2jiracomment
     end
   end
 
-  def self.dispatch(log, e, sink)
+  def self.dispatch(log, event, sink)
     logger = LoggerWithTag.new(log, 'events')
-    event = e.first
-    server = e[1]
+    event, server = event
     logger.debug("#{event} from #{server}")
-    return sink.send(event.type.tr('-', '_').to_sym, log, event, server)
+    sink.send(event.type.tr('-', '_').to_sym, log, event, server)
   rescue NoMethodError => e
     logger.debug("Cannot handle event of type #{event.type} - #{e}")
     false
-  rescue StandardError => error
-    logger.error('Cannot process event', error)
+  rescue StandardError => e
+    logger.error('Cannot process event', e)
     false
   end
 

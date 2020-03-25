@@ -56,7 +56,7 @@ RSpec.describe Gerrit2jiracomment do
     allow(jira)
       .to(receive_message_chain('Issue.find').and_raise(
             JIRA::HTTPError.new('test')
-      ))
+          ))
     sink = Gerrit2jiracomment::ToJira.new(logger, jira)
     content = input('change_merged_no_ticket')
     event = Gerrit2jiracomment.parse_json(content)

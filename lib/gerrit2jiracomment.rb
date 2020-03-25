@@ -154,6 +154,7 @@ module Gerrit2jiracomment
     logger = LoggerWithTag.new(log, 'events')
     event = e.first
     server = e[1]
+    logger.debug("#{event} from #{server}")
     return sink.send(event.type.tr('-', '_').to_sym, log, event, server)
   rescue NoMethodError => e
     logger.debug("Cannot handle event of type #{event.type} - #{e}")

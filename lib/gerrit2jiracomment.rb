@@ -1,3 +1,4 @@
+# coding: utf-8
 # frozen_string_literal: true
 
 require 'gerrit2jiracomment/version'
@@ -120,7 +121,7 @@ module Gerrit2jiracomment
 
       found = false
       message.scan(Gerrit2jiracomment.regexp).map(&:strip).each do |match|
-        found ||= handle_change_merged_issue_comment(match, log, event, server)
+        found = handle_change_merged_issue_comment(match, log, event, server) || found
       end
 
       found || log.fail(ProcessException, "No jira-issue found in #{event}")

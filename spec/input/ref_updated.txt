@@ -1,0 +1,15 @@
+{
+    "eventCreatedOn": 1531429900,
+    "type": "ref-updated",
+    "refUpdate": {
+        "project": "test/gerrit-playground",
+        "refName": "refs/heads/master",
+        "newRev": "c5718bf15e5cb48242447ce1d4940e07b23c7dff",
+        "oldRev": "4d8980a09bbba130a8a0a25f162ecf1a8ec4f0ab"
+    },
+    "submitter": {
+        "username": "christian.koestlin",
+        "email": "christian.koestlin@esrlabs.com",
+        "name": "Christian Koestlin"
+    }
+}

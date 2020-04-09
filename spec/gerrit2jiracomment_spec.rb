@@ -63,4 +63,10 @@ RSpec.describe Gerrit2jiracomment do
     expect(Gerrit2jiracomment.dispatch(logger, [event, 'gerrit'], sink))
       .to eq(false)
   end
+  
+  it 'should find all tickets referenced' do
+    message = "Disable hyperflash support and switch to REE FS\n\nTicket AHCP5-197, AHCP5-2351\n\nHCP5 devices don't have hyperflash chips. REE FS is used for testing\npurpose only and will be switched to RPMB FS in the future.\n\nChange-Id: I55b9db09ed931881358283a3ed1e37a38a6c3e0d"
+    expect(message.scan(Gerrit2jiracomment.regexp).map(&:strip).size)
+      .to eq(2)
+  end
 end

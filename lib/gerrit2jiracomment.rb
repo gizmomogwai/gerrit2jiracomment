@@ -1,15 +1,14 @@
-# coding: utf-8
 # frozen_string_literal: true
 
-require 'gerrit2jiracomment/version'
-require 'logger'
-require 'syslog/logger'
-require 'json'
-require 'open3'
-require 'ostruct'
-require 'jira-ruby'
-require 'yaml'
-require 'rx'
+require "gerrit2jiracomment/version"
+require "logger"
+require "syslog/logger"
+require "json"
+require "open3"
+require "ostruct"
+require "jira-ruby"
+require "yaml"
+require "rx"
 
 # Gerrit 2 jira sync module
 module Gerrit2jiracomment
@@ -112,7 +111,7 @@ module Gerrit2jiracomment
     end
 
     def change_merged(log, event, server)
-      log = LoggerWithTag.new(log, 'changeset')
+      log = LoggerWithTag.new(log, "changeset")
 
       log.debug("Send change merged to jira #{event}")
 
@@ -121,7 +120,8 @@ module Gerrit2jiracomment
 
       found = false
       message.scan(Gerrit2jiracomment.regexp).map(&:strip).each do |match|
-        found = handle_change_merged_issue_comment(match, log, event, server) || found
+        found = handle_change_merged_issue_comment(match, log, event, server) ||
+                found
       end
 
       found || log.fail(ProcessException, "No jira-issue found in #{event}")
@@ -134,7 +134,7 @@ module Gerrit2jiracomment
 
   def self.stdout_in_utf8(command)
     _stdin, stdout, _stderr = Open3.popen3(command)
-    stdout.set_encoding 'UTF-8:UTF-8'
+    stdout.set_encoding "UTF-8:UTF-8"
     stdout
   end
 
@@ -151,29 +151,29 @@ module Gerrit2jiracomment
   end
 
   def self.dispatch(log, event, sink)
-    logger = LoggerWithTag.new(log, 'events')
+    logger = LoggerWithTag.new(log, "events")
     event, server = event
     logger.debug("#{event} from #{server}")
-    sink.send(event.type.tr('-', '_').to_sym, log, event, server)
+    sink.send(event.type.tr("-", "_").to_sym, log, event, server)
   rescue NoMethodError => e
     logger.debug("Cannot handle event of type #{event.type} - #{e}")
     false
   rescue StandardError => e
-    logger.error('Cannot process event', e)
+    logger.error("Cannot process event", e)
     false
   end
 
   def self.syslog_or_stdout_logger
-    Syslog::Logger.new 'g2jc'
+    Syslog::Logger.new "g2jc"
   rescue StandardError
     Logger.new(STDOUT)
   end
 
   def self.tag_and_message(msg)
-    tag, m = msg.split('†')
+    tag, m = msg.split("†")
     unless m
       m = tag
-      tag = 'gerrit2jiracomment'
+      tag = "gerrit2jiracomment"
     end
     [tag, m]
   end
@@ -182,7 +182,7 @@ module Gerrit2jiracomment
     logger = syslog_or_stdout_logger
     logger.formatter = proc do |severity, datetime, _progname, msg|
       tag, message = tag_and_message(msg)
-      format('%<year>04d-%<month>02d-%<day>02d %<hour>02d:%<min>02d:' \
+      format("%<year>04d-%<month>02d-%<day>02d %<hour>02d:%<min>02d:" \
              "%<sec>02d.000 7331 %<severity>s %<tag>s: %<message>s\n",
              year: datetime.year, month: datetime.month, day: datetime.day,
              hour: datetime.hour, min: datetime.min, sec: datetime.sec,
@@ -192,17 +192,17 @@ module Gerrit2jiracomment
   end
 
   def self.load_settings(logger)
-    logger.debug('lifecycle†loading settings from settings.yaml.gpg')
+    logger.debug("lifecycle†loading settings from settings.yaml.gpg")
     YAML.safe_load(`gpg --decrypt settings.yaml.gpg 2> /dev/null`)
   end
 
   def self.to_jira(logger, settings)
     ToJira.new(logger,
                JIRA::Client.new(
-                 username: settings['jira_user'],
-                 password: settings['jira_password'],
-                 site: 'https://esrlabs.atlassian.net/',
-                 context_path: '', auth_type: :basic,
+                 username: settings["jira_user"],
+                 password: settings["jira_password"],
+                 site: "https://esrlabs.atlassian.net/",
+                 context_path: "", auth_type: :basic,
                  use_ssl: true,
                  ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE
                ))
@@ -212,13 +212,13 @@ module Gerrit2jiracomment
     subject.as_observable.subscribe(
       ->(e) { dispatch(logger, e, event_sink) },
       ->(_err) { logger.error(error) },
-      -> { logger.info('lifecycle†finished') }
+      -> { logger.info("lifecycle†finished") }
     )
   end
 
   def self.hosts
-    ['gerrit.int.esrlabs.com', 'git.esrlabs.com',
-     'hcp5-sources.int.esrlabs.com']
+    ["gerrit.int.esrlabs.com", "git.esrlabs.com",
+     "hcp5-sources.int.esrlabs.com"]
   end
 
   def self.run
@@ -233,6 +233,6 @@ module Gerrit2jiracomment
     hosts
       .map { |server| receive_events(logger, server, subject) }
       .each(&:join)
-    logger.info('lifecycle†exiting')
+    logger.info("lifecycle†exiting")
   end
 end

@@ -16,4 +16,7 @@ encode your settings with gpg -e -r user@email.com settings.yaml
 To deploy a new gem version increment version.rb, run bundle install, make a commit and push this to origin.
 Travis will do the deployment to rubygems.org, if the build is allright.
 
+To deploy automatically to rubygems, one needs to add the api key of rubygems by running
+~travis encrypt --add deploy.api_key~
+
 ** Contributing

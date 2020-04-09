@@ -3,16 +3,17 @@ rvm:
 - 2.5.0
 sudo: false
 before_install:
-  - gem install bundler -v 1.16.1
+- gem install bundler -v 1.16.1
 before_script:
-  - bundle install
+- bundle install
 script:
-  - bundle exec rake spec build
-  - find .
+- env
+- bundle exec rake spec build
+- find .
 deploy:
   provider: rubygems
   skip_cleanup: true
   api_key:
-    secure: 5gAc1r58UKCjXVNCHYse1GiWM3tPMo0IHuiOA6A/C1rGzVRmimu1i4Q1JQyeViwIrGj1XP4hK1iCBcoFWJe/wY3FVI9UThA4Y76o4aqRRqxbxzFwnK7iRXb50STllMA78UnDQggKWhm0k6EDtkLYl9wIfeTG7Wcx/rr6kGYiROTsiqXKPy+KVFGAF0NtJvehAXxJu4zrLN5bcEPGCFQijd7rEjgwShsRwPs2k8BHmOTnqDIKLqAnRdzcoX4sNR1P3gggvDnJ4+cAqOGv6v3EWHaAMJEI4DE1sDNeRf8lY2OSGS7LZaFtcth6+k3W3rCiDgiJ7CIcPXxWat/IGC8kwV89jhRB8dZ12G5pBWfoiM23Zm7EZ2JEz8fH2dpqbznIEJblo2HbArCZyY0K/cdMfxHNTDPh856Oh0dX2iOdCL+PhgCMjmWWPJDphR06zVmfCxDrDo3zHzzG1EOQDAIE8BNDp1JvkadpuoxCUTL5T0Hyq1E/VJiMJtCmIQWssXn2e0oNK3qeiplMsPmhLNp+fmcqY3kH3P8uYlEedeJaaBMkBRj/vWC0xrajupllbPsVhj0RVD3joP+VrUbjvweagRN6UYR6v8NDgAVxXuSn1FPxFR3g6rQOZRQF1fEx+SqEcbIzQFdDG6Lym/TWJqzVu2dVZfikjw5Df0YOLhXXgXA=
+    secure: ASJyDyynS5sc4I4dBQx3LrnYxl5331KAB0C0k/BzAfYsBiORpKdMRj1nPEvaTu1LNmIN1smJswdnwxIDd0r8Cdl2TFHu9oTlxF6wYi7r3Ix2Btmy1xAVMwfEmocQI9JIUvzLY6Dah/MOQG/A61XKpL6JBixz43sQW64fpN7y8wZMjbjm9/U3XhcL5zPDHjRebpgWYzBptuVCdCbvfnTETsYd4k/H5v9Ax6pCWkkK9Y2U9csWd7wcVl6Ja6qFM69wSgc0GmVzP/heqE4rG+fvauaHrtEp0qTvMkVgOTxOG3wa7MH3f4qmx+oRU8tV6JnjfuDt9Um0gzcQvAhmCvKl0Co4lkvdp3VpvWIedS0Z+aiw+FG+3n2xUxr4hKIHTTtQVMglXkKL5BBpKfPCkssmXnhZojBtfDUxdOaAXJuxqgKBdLOiDyf5kkxcp5iA3yAGDbW0WY95HpqXC0n3/8kM6QEYbjsnUeazn/XZD7HlzahZc72C3Ro+o5P8HybrHyuZCncmsikTyF91DJRdN3WxnNUj95UW80gw0xqbtvhWCHPQGFvvejhwGPGHe/cBP8imEBBrqnInM/TgCCMJyjyH2J448wJIL5Dx9Z4WArsKmBHOQLua3QCqpkd770+W1VP0Bd94aklQcBrh0nG2ltZEAhKGszcZnxz1CiVnQrdSj1c=
   on:
     tags: true

@@ -217,7 +217,7 @@ module Gerrit2jiracomment
   end
 
   def self.hosts
-    ["gerrit.int.esrlabs.com", "git.esrlabs.com",
+    ["gerrit.int.esrlabs.com", "gerrit.esrlabs.com",
      "hcp5-sources.int.esrlabs.com"]
   end
 

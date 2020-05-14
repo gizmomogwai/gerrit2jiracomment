@@ -3,7 +3,7 @@
 Proof of concept implementation that listens on a gerrit stream and updated jira comments accordingly.
 
 ** Installation
-
+   
 ~gem install gerrit2jiracomment~
 
 ** Usage
@@ -20,3 +20,12 @@ To deploy automatically to rubygems, one needs to add the api key of rubygems by
 ~travis encrypt --add deploy.api_key~
 
 ** Contributing
+
+** Deployment
+- increment the version in version.rb
+- make a pull request for your commit,
+- see that it builds,
+- merge it to master,
+- push a tag on it
+- travis will deploy to rubygems.org
+- install gem from there
